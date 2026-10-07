@@ -12,7 +12,8 @@ export const counterReducer = createReducer(
     ...state,
     counter: state.counter - 1
   })),
-    on(reset, () => ({
+    on(reset, (state) => ({
+      ...state,
       counter: 0
   })),
   on(customInc, (state, action) => ({

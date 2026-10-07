@@ -2,24 +2,22 @@ import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { CounterState } from '../states/counter.state';
 import { customInc, toggleCustomInput } from '../states/counter.actions';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
+import { getToggle } from '../states/counter.selectors';
 
 @Component({
   selector: 'app-custom-input',
   templateUrl: './custom-input.component.html',
   styleUrls: ['./custom-input.component.css']
 })
-export class CustomInputComponent implements OnInit, OnDestroy{
+export class CustomInputComponent implements OnInit{
   constructor(private store: Store<{counter: CounterState}>){}
   
   customValue : number = 0;
-  showCustomInput?: boolean = false;
-  toggleSubscription : Subscription | null = null;
+  showCustomInput$: Observable<boolean> | null = null;
   
   ngOnInit() {
-    this.toggleSubscription = this.store.select('counter').subscribe(data => {
-      this.showCustomInput =  data.toggle;
-    })
+    this.showCustomInput$ = this.store.select(getToggle);
   }
   
   
@@ -31,9 +29,4 @@ export class CustomInputComponent implements OnInit, OnDestroy{
     this.store.dispatch(toggleCustomInput());
   }
 
-  ngOnDestroy(): void {
-    if(this.toggleSubscription){
-      this.toggleSubscription.unsubscribe();
-    }
-  }
 }
