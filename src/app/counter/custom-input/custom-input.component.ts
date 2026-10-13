@@ -4,6 +4,7 @@ import { CounterState } from '../states/counter.state';
 import { customInc, toggleCustomInput } from '../states/counter.actions';
 import { Observable, Subscription } from 'rxjs';
 import { getToggle } from '../states/counter.selectors';
+import { AppState } from 'src/app/store/app.state';
 
 @Component({
   selector: 'app-custom-input',
@@ -11,7 +12,7 @@ import { getToggle } from '../states/counter.selectors';
   styleUrls: ['./custom-input.component.css']
 })
 export class CustomInputComponent implements OnInit{
-  constructor(private store: Store<{counter: CounterState}>){}
+  constructor(private store: Store<AppState>){}
   
   customValue : number = 0;
   showCustomInput$: Observable<boolean> | null = null;
